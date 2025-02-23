@@ -1,0 +1,4 @@
+#ignore all classes
+*.class
+#ingnore all txt
+*.txt

@@ -1,3 +1,8 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.util.Scanner;
+
+
 public class BrowserHistory{
     //The history node and its instance variables
     private class HistoryNode{
@@ -50,32 +55,102 @@ public class BrowserHistory{
         
     }
 
-    public void removePage(String timestamp){
+    public void removePage(String time){
         //setting p to be the 1 element
         HistoryNode p = head.next;
-        int counter = 0;
        //while we havent reached the tail node
         while(p.next != null){
-            if(p.timestamp.equals(timestamp)){
+            if(p.timestamp.equals(time)){
+                p.prev.next = p.next;
+                p.next.prev = p.prev;
+                p.next = null;
+                p.prev = null;
                 break;
             }
             p = p.next;
-            counter ++;
-        }
-        //there three cases for deletion, in the middle, the start and the end
-        // at the middle this is the logic 
-        if(counter < size || counter > 0){
-            p.prev.next = p.next;
-            p.next.prev = p.prev;
-            p.next = null;
-            p.prev = null;
-
-        }
-        //this is the logic when its at the end
-        if(counter == 0){
-
-        }
+            
+        }             
         size --;
+
+    }
+
+    public void displayHistoryForward(){
+        int count = 1;
+        HistoryNode p = head.next;
+        String s = "";
+        while(p.next != null){
+            s = String.format("%s %d. %s %s\n", s, count, p.timestamp, p.url);
+            count ++;
+            p = p.next;
+        }
+        System.out.println(s);
+    }
+    public void displayHistoryBackward(){
+        String s = getHistory(); 
+        System.out.println(s);
+    }
+
+    public String getHistory(){
+        int count = size;
+        HistoryNode p = tail.prev;
+        String s = "";
+        while(p.prev != null){
+            s = String.format("%s %d. %s %s\n", s, count, p.timestamp, p.url);
+            count --;
+            p = p.prev;
+        }
+        return s;
+
+    }
+
+
+    public void saveToFile(){        
+        try {
+            FileWriter file = new FileWriter("./history.txt");
+            file.write(getHistory());
+            file.close();
+
+            System.out.println("Successfully saved");
+            
+        } catch (Exception e) {
+            System.out.println("Not saved" + e.getMessage());
+        }
+    }
+    public void loadFromFile(){
+        try {
+            File file = new File("./history.txt");
+            Scanner scanFile = new Scanner(file);
+
+            while(scanFile.hasNextLine()){
+                String s = scanFile.nextLine();
+                String[] s_split = s.split("\\s+");
+                addPage(s_split[2], s_split[3]);
+            }
+            System.out.println("Successfully loaded");
+            
+        } catch (Exception e) {
+            System.out.println("Failed to Load" + e.getMessage());
+        }
+    }
+
+
+
+
+    public static void main(String[] args) {
+        BrowserHistory bs = new BrowserHistory();
+        bs.loadFromFile();
+        bs.addPage("12-10-25", "www.win.com");
+        bs.addPage("02-10-21", "www.lose.com");
+        bs.addPage("18-10-28", "www.getMoney.com");
+        bs.addPage("19-10-20", "www.chopMoney.com");
+        bs.displayHistoryBackward();
+        bs.displayHistoryForward();
+
+        bs.removePage("02-10-21");
+        bs.displayHistoryBackward();
+        bs.displayHistoryForward();
+        bs.saveToFile();
+
 
     }
 
