@@ -1,7 +1,7 @@
 
 import java.util.Random;
 
-public class EnhancedPlaylist {
+public class FullyFunctionalPlayList{
     private class Node{
         Node prev;
         Node next;
@@ -30,7 +30,7 @@ public class EnhancedPlaylist {
             currentSong = head;
             if(size == 0){
                 tail = newNode;
-            }            
+            }          
         }
         if(pos > 1 && pos <= size){
             Node p = head;
@@ -50,6 +50,8 @@ public class EnhancedPlaylist {
             tail = newNode;
         }
         size ++;
+        tail.next = head;
+        head.prev = tail;
 
     }
 
@@ -91,7 +93,7 @@ public class EnhancedPlaylist {
         return total;
     }
 
-    public void playNextSong(){
+    public void playNexSong(){
         if (currentSong != null){
             currentSong = currentSong.next;
         }
@@ -100,6 +102,9 @@ public class EnhancedPlaylist {
             currentSong = head;
         }
        
+    }
+    public void continiousPlay(){
+        currentSong = currentSong.next;
     }
 
     public Node get(int pos){

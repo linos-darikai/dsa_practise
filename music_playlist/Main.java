@@ -1,5 +1,7 @@
 
 
+
+
 public class Main {
     public static void main(String[] args) {
         Song s1 = new Song("Doc Doc Shebeleza", "Casper Nyovest", 3.23);
@@ -9,16 +11,34 @@ public class Main {
         
         System.out.println(s1);
         System.out.println(s2);
-        BasicPlaylist bs = new BasicPlaylist();
-        bs.addSong(s1, 1);
-        bs.addSongLast(s2);
-        bs.addSongLast(s3);
-        bs.addSongLast(s4);
-        bs.displaySongs();
-        bs.removeSong("Doc doc shebeleza");
-        bs.displaySongs();
-        System.out.println(bs.playListDuration());
+     
+        EnhancedPlaylist bc = new EnhancedPlaylist();
+        bc.addSong(s1, 1);
+        bc.addSong(s2, 1);
+        bc.addLast(s3);
+        bc.addLast(s3);
+        bc.displaySongs();
+        System.out.println(bc.playListDuration());
+
+        bc.removeSong("biri marung");
+    
+        bc.displaySongs();
+        System.out.println(bc.playListDuration());
+
+        System.out.println(bc.displaySong(2));
+
+        System.out.println(bc.displayCurrentSong());
+        bc.playNextSong();
+        bc.playNextSong();
+        System.out.println(bc.displayCurrentSong());
+        bc.playPrevSong();
+        System.out.println(bc.displayCurrentSong());
+        System.out.println("Random song");
         
+        bc.shuffleNextSong();
+        System.out.println(bc.displayCurrentSong());
+
+       
     }
     
 }
